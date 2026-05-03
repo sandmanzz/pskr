@@ -39,7 +39,8 @@ const navItems = [
     icon: Globe,
     children: [
       { label: "Pages", href: "/content/pages" },
-      { label: "Banners", href: "/content/banners" },
+      { label: "News", href: "/content/news" },
+      { label: "Files", href: "/content/files" },
     ],
   },
   {

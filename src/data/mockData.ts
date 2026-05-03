@@ -311,14 +311,16 @@ export const mockCategories = [
     name: "book",
     associatedItems: 0,
     createdAt: "Apr 30, 2026",
+    lastUpdated: "Apr 30, 2026",
+    sortNumber: 1,
     active: true,
   },
 ]
 
 export const mockCustomerStats = {
-  total: 48,
-  active: 10,
-  inactive: 38,
+  total: 0,
+  active: 0,
+  inactive: 0,
 }
 
 export const mockAgentStats = {
@@ -362,95 +364,4 @@ export const mockAgents = [
   },
 ]
 
-export const mockCustomers = [
-  {
-    id: 1,
-    fullName: "testuser2",
-    email: "testuser2@mail.co.id",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Jan 7, 2026",
-    active: true,
-  },
-  {
-    id: 2,
-    fullName: "testing user",
-    email: "testingemail@mail.co.id",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 30, 2025",
-    active: true,
-  },
-  {
-    id: 3,
-    fullName: "testing user",
-    email: "testingemail@mail.co.id",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 30, 2025",
-    active: false,
-  },
-  {
-    id: 4,
-    fullName: "renaldy",
-    email: "renaldyramadhan567@gmail.com",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 24, 2025",
-    active: false,
-  },
-  {
-    id: 5,
-    fullName: "Renaldy",
-    email: "renaldyramadhan567@gmail.com",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 24, 2025",
-    active: false,
-  },
-  {
-    id: 6,
-    fullName: "Renaldy",
-    email: "renaldyramadhan567@gmail.com",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 24, 2025",
-    active: false,
-  },
-  {
-    id: 7,
-    fullName: "Renaldy",
-    email: "renaldyramadhan567@gmail.com",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 24, 2025",
-    active: false,
-  },
-  {
-    id: 8,
-    fullName: "testing",
-    email: "renaldyramadhan567@gmail.com",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 24, 2025",
-    active: false,
-  },
-  {
-    id: 9,
-    fullName: "Marsheyla",
-    email: "test@test.com",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 23, 2025",
-    active: true,
-  },
-  {
-    id: 10,
-    fullName: "Marsheyla",
-    email: "o_marsheyla@cocorobo.jp",
-    companyName: "-",
-    phoneNumber: "-",
-    createdAt: "Dec 23, 2025",
-    active: true,
-  },
-]
+export const mockCustomers: { id: number; fullName: string; email: string; companyName: string; phoneNumber: string; createdAt: string; active: boolean }[] = []

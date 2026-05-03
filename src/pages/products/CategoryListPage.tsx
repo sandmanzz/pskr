@@ -1,15 +1,22 @@
 import { useMemo, useState } from "react"
 import type { ReactNode } from "react"
 import {
+  ArrowLeft,
   Box,
+  Calendar,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
   ChevronsUpDown,
+  Clock,
+  FolderOpen,
+  Info,
   LayoutGrid,
+  Pencil,
   Plus,
   Search,
+  Trash2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,19 +30,18 @@ import {
 import { mockCategories, mockCategoryStats } from "@/data/mockData"
 import { cn } from "@/lib/utils"
 
+type Category = (typeof mockCategories)[number]
+
 const columns = ["Category Name", "Associated Items", "Created At"]
 
 export function CategoryListPage() {
   const [search, setSearch] = useState("")
   const [rowsPerPage, setRowsPerPage] = useState("10")
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
 
   const filteredCategories = useMemo(() => {
     const query = search.trim().toLowerCase()
-
-    if (!query) {
-      return mockCategories
-    }
-
+    if (!query) return mockCategories
     return mockCategories.filter((category) =>
       [category.name, String(category.associatedItems), category.createdAt].some((value) =>
         value.toLowerCase().includes(query)
@@ -96,50 +102,151 @@ export function CategoryListPage() {
           </div>
         </section>
 
-        <section className="mt-8 overflow-hidden border border-slate-200 bg-white">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[900px] table-fixed">
-              <thead>
-                <tr className="border-b border-slate-200">
-                  {columns.map((column) => (
-                    <th
-                      key={column}
+        <div className="relative mt-8 flex gap-0">
+          {/* Table */}
+          <section
+            className={cn(
+              "overflow-hidden border border-slate-200 bg-white transition-all duration-300",
+              selectedCategory ? "w-[55%]" : "w-full"
+            )}
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[500px] table-fixed">
+                <thead>
+                  <tr className="border-b border-slate-200">
+                    {columns.map((column) => (
+                      <th
+                        key={column}
+                        className={cn(
+                          "h-14 px-4 text-left text-sm font-semibold text-slate-500",
+                          column === "Category Name" && "w-[40%]",
+                          column === "Associated Items" && "w-[35%]",
+                          column === "Created At" && "w-[25%]"
+                        )}
+                      >
+                        <button type="button" className="inline-flex items-center gap-3">
+                          {column}
+                          <ChevronsUpDown className="h-4 w-4 text-slate-500" />
+                        </button>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredCategories.map((category) => (
+                    <tr
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category)}
                       className={cn(
-                        "h-14 px-4 text-left text-sm font-semibold text-slate-500",
-                        column === "Category Name" && "w-[34%]",
-                        column === "Associated Items" && "w-[34%]",
-                        column === "Created At" && "w-[32%]"
+                        "cursor-pointer border-b border-slate-200 last:border-b-0 hover:bg-slate-50",
+                        selectedCategory?.id === category.id && "bg-purple-50"
                       )}
                     >
-                      <button type="button" className="inline-flex items-center gap-3">
-                        {column}
-                        <ChevronsUpDown className="h-4 w-4 text-slate-500" />
-                      </button>
-                    </th>
+                      <td className="px-4 py-3 text-base font-semibold text-slate-950">
+                        {category.name}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm font-semibold text-slate-950 shadow-sm">
+                          <Box className="h-4 w-4" />
+                          {category.associatedItems} Items
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-base font-medium text-slate-500">
+                        {category.createdAt}
+                      </td>
+                    </tr>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCategories.map((category) => (
-                  <tr key={category.id} className="border-b border-slate-200 last:border-b-0">
-                    <td className="px-4 py-3 text-base font-semibold text-slate-950">
-                      {category.name}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm font-semibold text-slate-950 shadow-sm">
-                        <Box className="h-4 w-4" />
-                        {category.associatedItems} Items
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-base font-medium text-slate-500">
-                      {category.createdAt}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Detail Panel */}
+          {selectedCategory && (
+            <aside className="w-[45%] border border-l-0 border-slate-200 bg-white">
+              {/* Panel Header */}
+              <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3.5">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </button>
+                <div className="flex items-center gap-1">
+                  <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                    <Info className="h-4 w-4" />
+                  </button>
+                  <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-red-50 hover:text-red-600">
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-5 space-y-4">
+                {/* Categories Information */}
+                <div className="rounded-xl border border-slate-200 bg-white p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <FolderOpen className="h-4 w-4 text-slate-500" />
+                    <h3 className="text-sm font-semibold text-slate-900">Categories Information</h3>
+                  </div>
+
+                  <p className="text-xs text-slate-400 mb-1">Category Name</p>
+                  <p className="text-xl font-bold text-slate-900 mb-4">{selectedCategory.name}</p>
+
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1.5 flex items-center gap-1">
+                        <span className="font-medium">#</span> Categories ID
+                      </p>
+                      <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700">
+                        {selectedCategory.id}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1.5">Sort Number</p>
+                      <p className="text-sm font-semibold text-slate-900 py-2">{selectedCategory.sortNumber}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-xs text-slate-400 mb-2">Associated Items</p>
+                    <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm font-semibold text-slate-950 shadow-sm">
+                      <Box className="h-4 w-4" />
+                      {selectedCategory.associatedItems} Items
+                    </span>
+                  </div>
+                </div>
+
+                {/* Timeline Information */}
+                <div className="rounded-xl border border-slate-200 bg-white p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Clock className="h-4 w-4 text-slate-500" />
+                    <h3 className="text-sm font-semibold text-slate-900">Timeline Information</h3>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1 flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" /> Created At
+                      </p>
+                      <p className="text-sm font-semibold text-slate-900">{selectedCategory.createdAt}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1 flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" /> Last Updated
+                      </p>
+                      <p className="text-sm font-semibold text-slate-900">{selectedCategory.lastUpdated}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          )}
+        </div>
 
         <div className="flex flex-col items-end gap-4 bg-white px-3 py-5 sm:flex-row sm:justify-end">
           <div className="flex items-center gap-4">

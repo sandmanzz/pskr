@@ -21,19 +21,19 @@ import { mockProducts } from "@/data/mockData"
 export function ProductEditPage() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const product = mockProducts.find((p) => p.id === Number(id)) ?? mockProducts[0]
-
-  const [name, setName] = useState(product.name)
-  const [price, setPrice] = useState(product.price.toString())
-  const [shortSummary, setShortSummary] = useState(product.shortSummary)
-  const [productSummary, setProductSummary] = useState(toRichTextValue(product.productSummary))
-  const [category, setCategory] = useState(product.category)
-
   const isNew = !id || id === "new"
+  const product = isNew ? null : (mockProducts.find((p) => p.id === Number(id)) ?? null)
+
+  const [name, setName] = useState(isNew ? "" : (product?.name ?? ""))
+  const [price, setPrice] = useState(isNew ? "" : (product?.price.toString() ?? ""))
+  const [shortSummary, setShortSummary] = useState(isNew ? "" : (product?.shortSummary ?? ""))
+  const [productSummary, setProductSummary] = useState(isNew ? "" : toRichTextValue(product?.productSummary ?? ""))
+  const [category, setCategory] = useState(isNew ? "Snack" : (product?.category ?? "Snack"))
+
   const pageTitle = isNew ? "Create Product" : "Edit Products"
   const pageSubtitle = isNew
     ? "Fill in the details for the new product"
-    : `Update "${product.name}" Products Information`
+    : `Update "${product?.name}" Products Information`
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -182,13 +182,13 @@ export function ProductEditPage() {
               <h3 className="text-base font-semibold text-gray-900">
                 Product Images{" "}
                 <span className="text-sm font-normal text-gray-400">
-                  {product.images.length}/8
+                  {(product?.images ?? []).length}/8
                 </span>
               </h3>
             </div>
 
             <div className="grid grid-cols-4 gap-3">
-              {product.images.map((img, i) => (
+              {(product?.images ?? []).map((img, i) => (
                 <div key={i} className="relative group">
                   <div className="aspect-square rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
                     <img src={img} alt="" className="w-full h-full object-cover" />
@@ -214,7 +214,7 @@ export function ProductEditPage() {
             className="bg-gray-900 hover:bg-gray-800 text-white px-8"
             onClick={() => navigate("/products")}
           >
-            Save Changes
+            {isNew ? "Create Product" : "Save Changes"}
           </Button>
           <Button variant="outline" onClick={() => navigate("/products")}>
             Cancel

@@ -5,7 +5,7 @@
       "name": "ccon-app",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 5176
+      "port": 8100
     }
   ]
 }

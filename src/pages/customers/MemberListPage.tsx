@@ -3,20 +3,18 @@ import { ChevronRight, LayoutGrid, Plus, Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { mockCustomers, mockCustomerStats } from "@/data/mockData"
 
-export function CustomerListPage() {
+const mockMemberStats = { total: 0, active: 0, inactive: 0 }
+const mockMembers: { id: number; email: string; status: string; createdAt: string }[] = []
+
+export function MemberListPage() {
   const navigate = useNavigate()
   const [search, setSearch] = useState("")
 
-  const filteredCustomers = useMemo(() => {
+  const filteredMembers = useMemo(() => {
     const q = search.trim().toLowerCase()
-    if (!q) return mockCustomers
-    return mockCustomers.filter((c) =>
-      [c.fullName, c.email, c.companyName, c.phoneNumber, c.createdAt].some((v) =>
-        v.toLowerCase().includes(q)
-      )
-    )
+    if (!q) return mockMembers
+    return mockMembers.filter((m) => m.email.toLowerCase().includes(q))
   }, [search])
 
   return (
@@ -28,13 +26,13 @@ export function CustomerListPage() {
           background: "linear-gradient(135deg, #4a1f7b 0%, #31245f 48%, #17213c 100%)",
         }}
       >
-        <h1 className="text-2xl font-bold text-white">Users</h1>
+        <h1 className="text-2xl font-bold text-white">Member Management</h1>
         <Button
           className="bg-white/10 hover:bg-white/20 text-white border border-white/25 gap-1.5"
-          onClick={() => navigate("/customers/new")}
+          onClick={() => navigate("/customers/member/new")}
         >
           <Plus className="h-4 w-4" />
-          Create User
+          Create Member
         </Button>
       </header>
 
@@ -43,14 +41,14 @@ export function CustomerListPage() {
         <nav className="flex items-center gap-2 text-sm text-slate-500 mb-6">
           <span className="text-slate-400">Dashboard</span>
           <ChevronRight className="h-4 w-4 text-slate-400" />
-          <span className="text-slate-700 font-medium">Users</span>
+          <span className="text-slate-700 font-medium">Member</span>
         </nav>
 
         {/* Stat Cards */}
         <div className="grid grid-cols-3 gap-5 mb-7">
-          <StatCard label="Total Users" value={mockCustomerStats.total} />
-          <StatCard label="Active Users" value={mockCustomerStats.active} />
-          <StatCard label="Inactive Users" value={mockCustomerStats.inactive} />
+          <StatCard label="Total Members" value={mockMemberStats.total} />
+          <StatCard label="Active Members" value={mockMemberStats.active} />
+          <StatCard label="Inactive Members" value={mockMemberStats.inactive} />
         </div>
 
         {/* Search Bar */}
@@ -60,7 +58,7 @@ export function CustomerListPage() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search User"
+              placeholder="Search Data..."
               className="pl-9 border-slate-200 text-sm shadow-none focus-visible:ring-1"
             />
           </div>
@@ -75,7 +73,7 @@ export function CustomerListPage() {
 
         {/* Table / Empty state */}
         <div className="rounded-b border border-t-0 border-slate-200 bg-white">
-          {filteredCustomers.length === 0 ? (
+          {filteredMembers.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 gap-4">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
                 <Search className="h-7 w-7 text-slate-400" />
@@ -88,7 +86,7 @@ export function CustomerListPage() {
               </div>
               <Button
                 className="bg-slate-950 hover:bg-slate-800 text-white gap-1.5"
-                onClick={() => navigate("/customers/new")}
+                onClick={() => navigate("/customers/member/new")}
               >
                 <Plus className="h-4 w-4" />
                 Create Your First data
@@ -99,21 +97,17 @@ export function CustomerListPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50">
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Full name</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Email</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Company Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Phone Number</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Status</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Created At</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredCustomers.map((c) => (
-                    <tr key={c.id} className="border-b border-slate-200 last:border-b-0 hover:bg-slate-50">
-                      <td className="px-4 py-3 font-semibold text-slate-900">{c.fullName}</td>
-                      <td className="px-4 py-3 text-slate-500">{c.email}</td>
-                      <td className="px-4 py-3 text-slate-500">{c.companyName}</td>
-                      <td className="px-4 py-3 text-slate-500">{c.phoneNumber}</td>
-                      <td className="px-4 py-3 text-slate-500">{c.createdAt}</td>
+                  {filteredMembers.map((m) => (
+                    <tr key={m.id} className="border-b border-slate-200 last:border-b-0 hover:bg-slate-50">
+                      <td className="px-4 py-3 font-medium text-slate-900">{m.email}</td>
+                      <td className="px-4 py-3 text-slate-500">{m.status}</td>
+                      <td className="px-4 py-3 text-slate-500">{m.createdAt}</td>
                     </tr>
                   ))}
                 </tbody>
