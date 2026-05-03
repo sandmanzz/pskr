@@ -63,8 +63,11 @@ const navItems = [
     label: "Settings",
     icon: Settings,
     children: [
-      { label: "General", href: "/settings" },
-      { label: "Payments", href: "/settings/payments" },
+      { label: "Store Setting", href: "/settings" },
+      { label: "Payment Methods", href: "/settings/payments" },
+      { label: "Shipping Methods", href: "/settings/shipping" },
+      { label: "Curva Integration", href: "/settings/curva" },
+      { label: "Domain", href: "/settings/domain" },
     ],
   },
 ]

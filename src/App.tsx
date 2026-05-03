@@ -16,6 +16,10 @@ import { UserCreatePage } from "@/pages/customers/UserCreatePage"
 import { MemberListPage } from "@/pages/customers/MemberListPage"
 import { MemberCreatePage } from "@/pages/customers/MemberCreatePage"
 import { SettingsPage } from "@/pages/settings/SettingsPage"
+import { PaymentSettingsPage } from "@/pages/settings/PaymentSettingsPage"
+import { ShippingListPage } from "@/pages/settings/ShippingListPage"
+import { ShippingCreatePage } from "@/pages/settings/ShippingCreatePage"
+import { CurvaIntegrationPage } from "@/pages/settings/CurvaIntegrationPage"
 
 function App() {
   return (
@@ -41,6 +45,10 @@ function App() {
           <Route path="/customers/member" element={<MemberListPage />} />
           <Route path="/customers/member/new" element={<MemberCreatePage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings/payments" element={<PaymentSettingsPage />} />
+          <Route path="/settings/shipping" element={<ShippingListPage />} />
+          <Route path="/settings/shipping/new" element={<ShippingCreatePage />} />
+          <Route path="/settings/curva" element={<CurvaIntegrationPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

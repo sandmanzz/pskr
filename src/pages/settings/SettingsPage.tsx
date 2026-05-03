@@ -371,31 +371,47 @@ export function SettingsPage() {
               <div>
                 <h3 className="text-xl font-bold text-slate-900">User Information</h3>
                 <p className="text-sm text-slate-400 mt-1">
-                  Manage your account details and preferences.
+                  Manage your account credentials and login information
                 </p>
               </div>
 
-              <SectionCard title="Account Details" subtitle="Your personal account information.">
-                <Field label="Name" required>
-                  <Input
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    placeholder="Enter your name"
-                    className="border-slate-200 h-11"
-                  />
-                </Field>
-                <Field label="Email" required>
-                  <Input
-                    type="email"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="border-slate-200 h-11"
-                  />
+              <SectionCard title="" subtitle="">
+                <div className="grid grid-cols-2 gap-5">
+                  <Field label="Email">
+                    <Input
+                      type="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      placeholder="otten@yopmail.com"
+                      className="border-slate-200 h-11"
+                    />
+                  </Field>
+                  <Field label="Password" hint="Leave blank to keep current password, or enter a new password to change it.">
+                    <Input
+                      type="password"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      placeholder="Enter your password"
+                      className="border-slate-200 h-11"
+                    />
+                  </Field>
+                </div>
+                <Field label="Profile Image">
+                  <div className="relative">
+                    <select className="w-full h-11 rounded-md border border-slate-200 px-3 text-sm text-slate-700 bg-white focus:outline-none appearance-none">
+                      <option value="" />
+                    </select>
+                    <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
                 </Field>
               </SectionCard>
             </div>
           )}
+
 
           {/* Actions */}
           <div className="flex items-center gap-3 mt-7 pt-5 border-t border-slate-100">
