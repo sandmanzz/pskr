@@ -16,6 +16,7 @@ import { UserCreatePage } from "@/pages/customers/UserCreatePage"
 import { MemberListPage } from "@/pages/customers/MemberListPage"
 import { MemberCreatePage } from "@/pages/customers/MemberCreatePage"
 import { SettingsPage } from "@/pages/settings/SettingsPage"
+import { AppStoreProvider } from "@/store/AppStore"
 import { PaymentSettingsPage } from "@/pages/settings/PaymentSettingsPage"
 import { ShippingListPage } from "@/pages/settings/ShippingListPage"
 import { ShippingCreatePage } from "@/pages/settings/ShippingCreatePage"
@@ -23,6 +24,7 @@ import { CurvaIntegrationPage } from "@/pages/settings/CurvaIntegrationPage"
 
 function App() {
   return (
+    <AppStoreProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -52,6 +54,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </AppStoreProvider>
   )
 }
 

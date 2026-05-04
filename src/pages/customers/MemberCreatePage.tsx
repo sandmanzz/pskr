@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeft, Eye, EyeOff, Mail, Save, Shield, Upload, User, X } from "lucide-react"
+import { useAppStore } from "@/store/AppStore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -34,6 +35,7 @@ function Field({
 
 export function MemberCreatePage() {
   const navigate = useNavigate()
+  const { addMember } = useAppStore()
   const [showPassword, setShowPassword] = useState(false)
   const [enableEmail, setEnableEmail] = useState(false)
   const [fileName, setFileName] = useState("")
@@ -224,7 +226,11 @@ export function MemberCreatePage() {
               <div className="flex items-center gap-3 pt-2">
                 <Button
                   className="bg-slate-700 hover:bg-slate-600 text-white gap-2 px-6"
-                  onClick={() => navigate("/customers/member")}
+                  onClick={() => {
+                    if (!form.email.trim()) { alert("Email wajib diisi"); return }
+                    addMember({ email: form.email.trim(), status: form.status || "active", memo: form.memo })
+                    navigate("/customers/member")
+                  }}
                 >
                   <Save className="h-4 w-4" />
                   Create Member

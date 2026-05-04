@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeft, Eye, EyeOff, Save, X } from "lucide-react"
+import { useAppStore } from "@/store/AppStore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -29,6 +30,7 @@ function Field({
 
 export function UserCreatePage() {
   const navigate = useNavigate()
+  const { addCustomer } = useAppStore()
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({
     fullName: "",
@@ -232,7 +234,14 @@ export function UserCreatePage() {
               <div className="flex items-center gap-3 pt-2">
                 <Button
                   className="bg-slate-700 hover:bg-slate-600 text-white gap-2 px-6"
-                  onClick={() => navigate("/customers")}
+                  onClick={() => {
+                    if (!form.fullName.trim() || !form.email.trim()) {
+                      alert("Nama dan email wajib diisi")
+                      return
+                    }
+                    addCustomer({ fullName: form.fullName.trim(), email: form.email.trim(), companyName: form.companyName, phoneNumber: form.phone, active: true })
+                    navigate("/customers")
+                  }}
                 >
                   <Save className="h-4 w-4" />
                   Create Users

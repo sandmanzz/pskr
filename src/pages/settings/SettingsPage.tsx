@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
+import { useAppStore } from "@/store/AppStore"
 
 type Tab = "shop" | "user"
 
@@ -82,28 +83,40 @@ const selectClass =
 
 export function SettingsPage() {
   const navigate = useNavigate()
+  const { shopSettings, updateShopSettings, userSettings, updateUserSettings } = useAppStore()
   const [tab, setTab] = useState<Tab>("shop")
+  const [saved, setSaved] = useState(false)
 
-  // Shop Information state
-  const [brandName, setBrandName] = useState("Otten")
-  const [repName, setRepName] = useState("otten")
-  const [storeAddress, setStoreAddress] = useState("HQ Otten")
+  // Shop Information state (initialized from store)
+  const [brandName, setBrandName] = useState(shopSettings.brandName)
+  const [repName, setRepName] = useState(shopSettings.repName)
+  const [storeAddress, setStoreAddress] = useState(shopSettings.storeAddress)
   const [shopLogo, setShopLogo] = useState("")
-  const [contactEmail, setContactEmail] = useState("otten@yopmail.com")
-  const [contactPhone, setContactPhone] = useState("08123080213")
-  const [sellUsedGoods, setSellUsedGoods] = useState(false)
-  const [enableTax, setEnableTax] = useState(true)
-  const [taxRate, setTaxRate] = useState("10")
-  const [taxLabel, setTaxLabel] = useState("消費税")
-  const [taxDisplayMode, setTaxDisplayMode] = useState("inclusive")
-  const [taxRegNumber, setTaxRegNumber] = useState("T1234567890123")
-  const [paymentMethods, setPaymentMethods] = useState("Payment Methods & Payment Timing")
-  const [deliveryTiming, setDeliveryTiming] = useState("Delivery Timing")
-  const [returnPolicy, setReturnPolicy] = useState("")
+  const [contactEmail, setContactEmail] = useState(shopSettings.contactEmail)
+  const [contactPhone, setContactPhone] = useState(shopSettings.contactPhone)
+  const [sellUsedGoods, setSellUsedGoods] = useState(shopSettings.sellUsedGoods)
+  const [enableTax, setEnableTax] = useState(shopSettings.enableTax)
+  const [taxRate, setTaxRate] = useState(shopSettings.taxRate)
+  const [taxLabel, setTaxLabel] = useState(shopSettings.taxLabel)
+  const [taxDisplayMode, setTaxDisplayMode] = useState(shopSettings.taxDisplayMode)
+  const [taxRegNumber, setTaxRegNumber] = useState(shopSettings.taxRegNumber)
+  const [paymentMethods, setPaymentMethods] = useState(shopSettings.paymentMethods)
+  const [deliveryTiming, setDeliveryTiming] = useState(shopSettings.deliveryTiming)
+  const [returnPolicy, setReturnPolicy] = useState(shopSettings.returnPolicy)
 
   // User Information state
-  const [userName, setUserName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
+  const [userName, setUserName] = useState(userSettings.password)
+  const [userEmail, setUserEmail] = useState(userSettings.email)
+
+  function handleSave() {
+    if (tab === "shop") {
+      updateShopSettings({ brandName, repName, storeAddress, contactEmail, contactPhone, sellUsedGoods, enableTax, taxRate, taxLabel, taxDisplayMode, taxRegNumber, paymentMethods, deliveryTiming, returnPolicy })
+    } else {
+      updateUserSettings({ email: userEmail, password: userName })
+    }
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -413,9 +426,15 @@ export function SettingsPage() {
           )}
 
 
+          {saved && (
+            <div className="mt-5 rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+              Settings berhasil disimpan!
+            </div>
+          )}
+
           {/* Actions */}
           <div className="flex items-center gap-3 mt-7 pt-5 border-t border-slate-100">
-            <Button className="bg-slate-900 hover:bg-slate-800 text-white gap-2 px-6">
+            <Button className="bg-slate-900 hover:bg-slate-800 text-white gap-2 px-6" onClick={handleSave}>
               <Save className="h-4 w-4" />
               Save Settings
             </Button>

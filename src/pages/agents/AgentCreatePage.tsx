@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAppStore } from "@/store/AppStore"
 import {
   ArrowLeft,
   Building2,
@@ -61,6 +62,7 @@ function SectionDivider({ title }: { title: string }) {
 
 export function AgentCreatePage() {
   const navigate = useNavigate()
+  const { addAgent } = useAppStore()
 
   const [showPassword, setShowPassword] = useState(false)
   const [enableBonus, setEnableBonus] = useState(false)
@@ -463,7 +465,14 @@ export function AgentCreatePage() {
               <div className="flex items-center gap-3 pt-2">
                 <Button
                   className="bg-slate-700 hover:bg-slate-600 text-white gap-2 px-6"
-                  onClick={() => navigate("/agents")}
+                  onClick={() => {
+                    if (!form.fullName.trim() || !form.email.trim()) {
+                      alert("Nama dan email wajib diisi")
+                      return
+                    }
+                    addAgent({ name: form.fullName.trim(), email: form.email.trim(), active: form.status === "1" })
+                    navigate("/agents")
+                  }}
                 >
                   <Save className="h-4 w-4" />
                   Create Agents
